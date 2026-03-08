@@ -1,0 +1,89 @@
+<!-- templates/receipt.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Receipt - Sky Bicycle{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="main-content">
+  <div class="receipt-card">
+    <div class="receipt-header">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2>Sky Bicycle Rental</h2>
+      <p>Booking Confirmed • E-Ticket</p>
+    </div>
+    
+    <div class="receipt-highlight">
+      <div class="label">Ticket Number</div>
+      <div class="ticket-id">{{ booking.ticket_id }}</div>
+    </div>
+    
+    <div class="receipt-body">
+      <div class="receipt-field">
+        <div class="label">Passenger Name</div>
+        <div class="value">{{ booking.full_name }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Mobile</div>
+        <div class="value">{{ booking.mobile }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Date</div>
+        <div class="value">{{ booking.rent_date }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Time</div>
+        <div class="value">{{ booking.rent_time }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Duration</div>
+        <div class="value">{{ booking.hours }} hours</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Location</div>
+        <div class="value">{{ booking.location|truncatechars:20 }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Amount Paid</div>
+        <div class="value">₹{{ booking.paid_amount }}</div>
+      </div>
+      <div class="receipt-field">
+        <div class="label">Balance</div>
+        <div class="value">₹{{ booking.balance_amount }}</div>
+      </div>
+    </div>
+    
+    <div style="background: #f5f9ff; border-radius: 10px; padding: 0.8rem; margin: 1rem 0;">
+      <p style="font-size: 0.8rem;"><i class="fas fa-clock"></i> Booking created: {{ booking.created_at|date:"d M Y H:i" }}</p>
+      <p style="font-size: 0.8rem;"><i class="fas fa-credit-card"></i> Payment ID: {{ booking.payment_id|default:"N/A"|truncatechars:15 }}</p>
+    </div>
+    
+    <div class="receipt-footer">
+      <p>Please show this ticket at the time of pickup</p>
+      <p style="font-size: 0.6rem; margin-top: 0.5rem;">Valid on booking date only</p>
+    </div>
+  </div>
+  
+  <div class="button-group">
+    <a href="{% url 'download_receipt' booking.id %}" class="btn-primary" style="flex: 1;">
+      <i class="fas fa-download"></i> Download
+    </a>
+    <button class="btn-primary" style="flex: 1;" onclick="window.print()">
+      <i class="fas fa-print"></i> Print
+    </button>
+  </div>
+  
+  <div style="text-align: center; margin: 1rem;">
+    <a href="{% url 'home' %}" style="color: #0f2b43; text-decoration: none;">
+      <i class="fas fa-home"></i> Back to Home
+    </a>
+  </div>
+</div>
+
+<div class="live-message">
+  <i class="fas fa-check-circle"></i> Booking confirmed! Thank you for choosing Sky Bicycle.
+</div>
+{% endblock %}

@@ -1,0 +1,148 @@
+<!-- templates/booking.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book a Bike - Sky Bicycle{% endblock %}
+
+{% block content %}
+<!-- Progress Bar -->
+<div class="progress-container">
+  <div class="progress-steps">
+    <div class="step active" id="step1">
+      <div class="step-circle">1</div>
+      <span class="step-label">Details</span>
+    </div>
+    <div class="step" id="step2">
+      <div class="step-circle">2</div>
+      <span class="step-label">Selfie</span>
+    </div>
+    <div class="step" id="step3">
+      <div class="step-circle">3</div>
+      <span class="step-label">Agreement</span>
+    </div>
+    <div class="step" id="step4">
+      <div class="step-circle">4</div>
+      <span class="step-label">Payment</span>
+    </div>
+  </div>
+  <div class="progress-line">
+    <div class="progress-fill" style="width: 25%;"></div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="stage active-stage" id="stage1">
+    <form method="POST" id="bookingForm">
+      {% csrf_token %}
+      
+      <div class="input-field">
+        <label><i class="far fa-user"></i> Full Name (as per Aadhar)</label>
+        {{ form.full_name }}
+        {% if form.full_name.errors %}
+          <div class="error-message" style="display: block;">{{ form.full_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="row2">
+        <div class="input-field">
+          <label><i class="fas fa-id-card"></i> Aadhar Number</label>
+          {{ form.aadhar_number }}
+          <div class="error-message" id="aadharError"></div>
+        </div>
+        <div class="input-field">
+          <label><i class="fas fa-mobile-alt"></i> Mobile</label>
+          {{ form.mobile }}
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="input-field">
+          <label><i class="fas fa-calendar-alt"></i> Age</label>
+          {{ form.age }}
+        </div>
+        <div class="input-field">
+          <label><i class="fas fa-clock"></i> Hours</label>
+          {{ form.hours }}
+        </div>
+      </div>
+
+      <div class="input-field">
+        <label><i class="fas fa-map-pin"></i> Address</label>
+        {{ form.address }}
+      </div>
+
+      <div class="location-group">
+        <div class="loc-row">
+          <button type="button" id="getLocationBtn"><i class="fas fa-location-arrow"></i> Share Current Location</button>
+        </div>
+        <div class="input-field" style="margin-top: 0.5rem;">
+          {{ form.location }}
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="input-field">
+          <label><i class="fas fa-calendar"></i> Date</label>
+          {{ form.rent_date }}
+        </div>
+        <div class="input-field">
+          <label><i class="fas fa-clock"></i> Time</label>
+          {{ form.rent_time }}
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Next <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="live-message" id="liveMessage">
+  <i class="fas fa-circle-info"></i> Please fill your details
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('getLocationBtn').addEventListener('click', function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude.toFixed(6);
+        const lng = position.coords.longitude.toFixed(6);
+        document.getElementById('id_location').value = `📍 ${lat}, ${lng}`;
+        showMessage('Location captured!', 'success');
+      },
+      function(error) {
+        showMessage('Location access denied', 'error');
+      }
+    );
+  }
+});
+
+// Aadhar formatting
+document.getElementById('id_aadhar_number').addEventListener('input', function(e) {
+  let val = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+  if (val.length > 12) val = val.slice(0,12);
+  let parts = [];
+  for (let i = 0; i < val.length; i += 4) {
+    parts.push(val.slice(i, i+4));
+  }
+  e.target.value = parts.join(' ');
+});
+
+// Mobile validation
+document.getElementById('id_mobile').addEventListener('input', function(e) {
+  this.value = this.value.replace(/\D/g, '').slice(0,10);
+});
+
+function showMessage(msg, type) {
+  const msgDiv = document.getElementById('liveMessage');
+  msgDiv.innerHTML = '<i class="fas fa-' + (type === 'error' ? 'exclamation-circle' : 'circle-info') + '"></i> ' + msg;
+  msgDiv.style.background = type === 'error' ? '#f8d7da' : '#e7f1fe';
+  msgDiv.style.borderLeftColor = type === 'error' ? '#dc3545' : '#0f2b43';
+}
+</script>
+{% endblock %}

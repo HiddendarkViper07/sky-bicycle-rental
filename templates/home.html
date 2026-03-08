@@ -1,0 +1,72 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-mobile-prev">
+  <div class="hero-badge-prev">
+    <i class="fas fa-sun"></i> 21°C · riding weather
+  </div>
+  <h1>Ride Standard, <span class="highlight">{{ site_settings.rate_per_hour|default:"200" }}₹/hr</span></h1>
+  <div class="hero-desc-prev">
+    <i class="fas fa-check-circle"></i> only standard bikes · pay {{ site_settings.booking_amount|default:"50" }}₹ now
+  </div>
+  <div class="hero-stats-prev">
+    <div class="stat-item-prev"><i class="fas fa-bicycle"></i> {{ site_settings.bikes_available|default:"6" }} std.</div>
+    <div class="stat-item-prev"><i class="fas fa-location-dot"></i> 3 stations</div>
+    <div class="stat-item-prev"><i class="fas fa-clock"></i> 24/7</div>
+  </div>
+</div>
+
+<div class="booking-card-mobile">
+  <div class="rate-block">
+    <span class="rate-label">standard rate</span>
+    <div class="rate-number">{{ site_settings.rate_per_hour|default:"200" }} <small>₹/h</small></div>
+    <span class="badge-mini"><i class="fas fa-bicycle"></i> pay {{ site_settings.booking_amount|default:"50" }}₹ now</span>
+  </div>
+  <a href="{% url 'book' %}" class="btn-book-mobile">
+    <i class="fas fa-bicycle"></i> book
+  </a>
+</div>
+
+<div class="live-message" id="mobileMessage">
+  <i class="fas fa-circle-check"></i> {{ site_settings.bikes_available|default:"8" }} standard bikes ready · downtown station
+</div>
+
+<div class="single-ticket-wrapper" style="margin: 0.2rem 1rem 0.8rem 1rem;">
+  <form class="ticket-bar-single" method="POST" action="{% url 'search_booking' %}" style="background: white; border-radius: 50px; border: 1.5px solid #b6d2f0; padding: 0.25rem 0.25rem 0.25rem 1.2rem; display: flex; align-items: center; justify-content: space-between;">
+    {% csrf_token %}
+    <input type="text" name="ticket_id" placeholder="ticket Id (SKY-1234)" pattern="SKY-\d{4}" title="Format: SKY-1234" style="border: none; background: transparent; padding: 0.7rem 0; font-size: 0.95rem; outline: none;">
+    <button type="submit" style="background: #0f2b43; border: none; color: white; border-radius: 50px; padding: 0.65rem 1.6rem; font-weight: 600; cursor: pointer;">
+      <i class="fas fa-search"></i> track ticket
+    </button>
+  </form>
+</div>
+
+<div class="contact-strip" style="display: flex; justify-content: space-around; background: white; margin: 0.2rem 1rem 0.8rem 1rem; padding: 0.6rem 0.5rem; border-radius: 60px;">
+  <a href="tel:{{ site_settings.contact_phone|default:'+919876543210' }}" style="text-decoration: none; color: #1d405e; background: #eef6ff; padding: 0.4rem 1rem; border-radius: 40px;">
+    <i class="fas fa-phone-alt"></i> Call
+  </a>
+  <a href="mailto:{{ site_settings.contact_email|default:'ride@skybicycle.in' }}" style="text-decoration: none; color: #1d405e; background: #eef6ff; padding: 0.4rem 1rem; border-radius: 40px;">
+    <i class="fas fa-envelope"></i> Email
+  </a>
+  <a href="#" style="text-decoration: none; color: #1d405e; background: #eef6ff; padding: 0.4rem 1rem; border-radius: 40px;">
+    <i class="fas fa-map-pin"></i> downtown
+  </a>
+</div>
+
+<div class="footnote" style="text-align: center; font-size: 0.7rem; color: #577594; margin: 0.2rem 0 0.8rem 0;">
+  <i class="fas fa-id-card"></i> ID required · 24h max
+</div>
+
+{% if recent_bookings %}
+<div style="margin: 1rem; padding: 0.5rem; background: white; border-radius: 20px;">
+  <h4 style="padding: 0.5rem 1rem;">Recent Bookings</h4>
+  {% for booking in recent_bookings %}
+  <div style="padding: 0.5rem 1rem; border-bottom: 1px solid #ecf3fa;">
+    <span style="font-weight: 700;">{{ booking.ticket_id }}</span> - {{ booking.full_name }} - {{ booking.rent_date }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

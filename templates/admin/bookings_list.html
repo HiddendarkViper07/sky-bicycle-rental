@@ -1,0 +1,141 @@
+<!-- templates/admin/bookings_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Bookings - Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .filter-bar { background: white; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem; }
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 20px; overflow: hidden; }
+    th { background: #0f2b43; color: white; padding: 1rem; text-align: left; }
+    td { padding: 1rem; border-bottom: 1px solid #ecf3fa; }
+    tr:hover { background: #f5f9ff; }
+    .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+    .page-item { padding: 0.5rem 1rem; background: white; border-radius: 10px; cursor: pointer; }
+    .page-item.active { background: #0f2b43; color: white; }
+  </style>
+</head>
+<body style="background: #eef3f9;">
+<div class="admin-container">
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="color: #0f2b43;">All Bookings</h1>
+    <div>
+      <a href="{% url 'admin_dashboard' %}" class="btn-secondary" style="margin-right: 1rem;">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+      <a href="{% url 'admin_logout' %}" class="btn-secondary">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+  
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <form method="GET" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+      <div style="flex: 1;">
+        <label style="display: block; margin-bottom: 0.5rem; color: #426684;">Status</label>
+        <select name="status" style="width: 100%; padding: 0.8rem; border-radius: 15px; border: 1.5px solid #cde0f3;">
+          <option value="">All Status</option>
+          <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+          <option value="confirmed" {% if status_filter == 'confirmed' %}selected{% endif %}>Confirmed</option>
+          <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+          <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+      </div>
+      
+      <div style="flex: 1;">
+        <label style="display: block; margin-bottom: 0.5rem; color: #426684;">Date</label>
+        <input type="date" name="date" value="{{ date_filter }}" style="width: 100%; padding: 0.8rem; border-radius: 15px; border: 1.5px solid #cde0f3;">
+      </div>
+      
+      <div>
+        <button type="submit" class="btn-primary" style="padding: 0.8rem 2rem;">
+          <i class="fas fa-filter"></i> Apply Filters
+        </button>
+      </div>
+      
+      {% if status_filter or date_filter %}
+      <div>
+        <a href="{% url 'admin_booking_list' %}" class="btn-secondary" style="padding: 0.8rem 2rem;">
+          <i class="fas fa-times"></i> Clear
+        </a>
+      </div>
+      {% endif %}
+    </form>
+  </div>
+  
+  <!-- Bookings Table -->
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Customer</th>
+          <th>Mobile</th>
+          <th>Date & Time</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td><strong>{{ booking.ticket_id }}</strong></td>
+          <td>{{ booking.full_name }}</td>
+          <td>{{ booking.mobile }}</td>
+          <td>{{ booking.rent_date }}<br><small>{{ booking.rent_time }}</small></td>
+          <td>₹{{ booking.total_amount }}<br><small>Paid: ₹{{ booking.paid_amount }}</small></td>
+          <td>
+            <span class="status-badge status-{{ booking.status }}">{{ booking.status }}</span>
+          </td>
+          <td>
+            <a href="{% url 'booking_detail' booking.id %}" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+              <i class="fas fa-eye"></i> View
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 3rem;">
+            <i class="fas fa-inbox" style="font-size: 3rem; color: #cbddec; margin-bottom: 1rem; display: block;"></i>
+            <p style="color: #4e6f8b;">No bookings found</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Pagination (if needed) -->
+  {% if bookings.paginator.num_pages > 1 %}
+  <div class="pagination">
+    {% if bookings.has_previous %}
+    <a href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" class="page-item">«</a>
+    <a href="?page={{ bookings.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" class="page-item">‹</a>
+    {% endif %}
+    
+    {% for num in bookings.paginator.page_range %}
+      {% if bookings.number == num %}
+      <span class="page-item active">{{ num }}</span>
+      {% elif num > bookings.number|add:'-3' and num < bookings.number|add:'3' %}
+      <a href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" class="page-item">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    
+    {% if bookings.has_next %}
+    <a href="?page={{ bookings.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" class="page-item">›</a>
+    <a href="?page={{ bookings.paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}" class="page-item">»</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>{% block title %}Sky Bicycle Rental{% endblock %}</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+<div class="app">
+  <!-- Navbar -->
+  <div class="nav-mobile">
+    <div class="logo-row">
+      <div class="logo-icon-small">🚲</div>
+      <div class="logo-text-mobile">
+        <h2>{{ site_settings.site_name|default:"Sky Bicycle Rental" }}</h2>
+        <span><i class="fas fa-map-marker-alt"></i> {{ site_settings.bikes_available|default:"6" }} std bikes</span>
+      </div>
+    </div>
+    <div class="nav-icons">
+      <a href="{% url 'search_booking' %}"><i class="fas fa-search"></i></a>
+      <a href="{% url 'my_bookings' %}"><i class="fas fa-ticket-alt"></i></a>
+      <a href="{% url 'admin_login' %}"><i class="fas fa-lock"></i></a>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="message-container" style="padding: 0.5rem 1.2rem;">
+    {% for message in messages %}
+    <div class="live-message" style="background: {% if message.tags == 'error' %}#f8d7da; border-left-color: #dc3545;{% else %}#e7f1fe; border-left-color: #0f2b43;{% endif %}">
+      <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Main Content -->
+  {% block content %}{% endblock %}
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="{% url 'home' %}" class="nav-item {% if current_path == '/' %}active{% endif %}">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="{% url 'search_booking' %}" class="nav-item {% if 'search' in current_path %}active{% endif %}">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </a>
+    <a href="{% url 'my_bookings' %}" class="nav-item {% if 'my-bookings' in current_path %}active{% endif %}">
+      <i class="fas fa-ticket-alt"></i>
+      <span>My Bookings</span>
+    </a>
+    <a href="#" onclick="showHelp()" class="nav-item">
+      <i class="fas fa-headset"></i>
+      <span>Help Desk</span>
+    </a>
+  </div>
+</div>
+
+<script>
+function showHelp() {
+  alert('📞 Contact Us:\nPhone: {{ site_settings.contact_phone|default:"+919876543210" }}\nEmail: {{ site_settings.contact_email|default:"ride@skybicycle.in" }}\nAddress: {{ site_settings.address|default:"Downtown Hub" }}');
+}
+</script>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

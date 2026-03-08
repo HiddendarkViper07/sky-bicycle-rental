@@ -1,0 +1,147 @@
+<!-- templates/admin/admin_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Sky Bicycle</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .admin-header {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body style="background: #eef3f9;">
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <div>
+      <h1 style="color: #0f2b43;">Admin Dashboard</h1>
+      <p style="color: #4e6f8b;">Welcome back, {{ admin_username }}</p>
+    </div>
+    <div>
+      <a href="{% url 'admin_logout' %}" class="btn-secondary" style="padding: 0.5rem 1.5rem;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+    <div class="live-message" style="margin-bottom: 1rem;">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <i class="fas fa-ticket-alt"></i>
+      <div class="number">{{ total_bookings }}</div>
+      <div class="label">Total Bookings</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-clock"></i>
+      <div class="number">{{ pending_bookings }}</div>
+      <div class="label">Pending</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-check-circle"></i>
+      <div class="number">{{ confirmed_bookings }}</div>
+      <div class="label">Confirmed</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-rupee-sign"></i>
+      <div class="number">₹{{ total_revenue }}</div>
+      <div class="label">Total Revenue</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-calendar-day"></i>
+      <div class="number">₹{{ today_revenue }}</div>
+      <div class="label">Today's Revenue</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-bicycle"></i>
+      <div class="number">{{ completed_bookings }}</div>
+      <div class="label">Completed</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="display: flex; gap: 1rem; margin: 2rem 0;">
+    <a href="{% url 'admin_booking_list' %}" class="btn-primary" style="flex: 1;">
+      <i class="fas fa-list"></i> View All Bookings
+    </a>
+    <button class="btn-secondary" onclick="refreshStats()" style="flex: 0.5;">
+      <i class="fas fa-sync-alt"></i> Refresh
+    </button>
+  </div>
+
+  <!-- Recent Bookings -->
+  <div style="background: white; border-radius: 20px; padding: 1.5rem;">
+    <h3 style="margin-bottom: 1rem;">Recent Bookings</h3>
+    
+    <div class="ticket-search" style="margin: 1rem 0;">
+      <input type="text" id="searchInput" placeholder="Search by Ticket ID or Mobile" onkeyup="filterBookings()">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+
+    <div id="bookingsList">
+      {% for booking in recent_bookings %}
+      <div class="booking-request" onclick="window.location.href='{% url 'booking_detail' booking.id %}'">
+        <div class="booking-request-header">
+          <span class="booking-request-id">{{ booking.ticket_id }}</span>
+          <span class="status-badge status-{{ booking.status }}">{{ booking.status }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #4e6f8b;">
+          <span>{{ booking.full_name }} • {{ booking.mobile }}</span>
+          <span>{{ booking.rent_date }}</span>
+        </div>
+        <div style="font-size: 0.7rem; margin-top: 0.3rem;">
+          <i class="fas fa-rupee-sign"></i> ₹{{ booking.paid_amount }} paid • Balance ₹{{ booking.balance_amount }}
+        </div>
+      </div>
+      {% empty %}
+      <p style="text-align: center; padding: 2rem; color: #4e6f8b;">No bookings found</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+function filterBookings() {
+  const input = document.getElementById('searchInput');
+  const filter = input.value.toLowerCase();
+  const bookings = document.querySelectorAll('.booking-request');
+  
+  bookings.forEach(booking => {
+    const text = booking.textContent.toLowerCase();
+    if (text.includes(filter)) {
+      booking.style.display = 'block';
+    } else {
+      booking.style.display = 'none';
+    }
+  });
+}
+
+function refreshStats() {
+  location.reload();
+}
+</script>
+</body>
+</html>

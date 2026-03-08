@@ -1,0 +1,874 @@
+/* static/css/style.css */
+
+/* ========== GLOBAL STYLES ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #eef3f9;
+  color: #13293f;
+  line-height: 1.4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app {
+  max-width: 480px;
+  width: 100%;
+  background: #f2f6fb;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0,0,0,0.02);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ========== NAVBAR ========== */
+.nav-mobile {
+  background: white;
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #cbddec;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon-small {
+  background: #0a253b;
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 6px 12px #0a253b20;
+}
+
+.logo-text-mobile h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0f2b40;
+  line-height: 1.2;
+}
+
+.logo-text-mobile span {
+  font-size: 0.75rem;
+  color: #4e6f8b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-icons {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.nav-icons a, .nav-links a {
+  text-decoration: none;
+  color: #1e3b5a;
+  background: #ecf3fc;
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 1px solid #cde0f3;
+}
+
+/* ========== HERO SECTION ========== */
+.hero-mobile-prev {
+  background: linear-gradient(107deg, #091e2e 0%, #122b40 100%);
+  color: white;
+  padding: 1.4rem 1.2rem 1rem 1.2rem;
+  margin: 0 0 0.6rem 0;
+  border-radius: 0 0 28px 28px;
+}
+
+.hero-badge-prev {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(5px);
+  padding: 0.3rem 1.2rem;
+  border-radius: 60px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hero-mobile-prev h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.hero-mobile-prev .highlight {
+  color: #ffd966;
+  border-bottom: 2px solid #ffd966;
+}
+
+.hero-desc-prev {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.hero-desc-prev i {
+  color: #ffd966;
+}
+
+.hero-stats-prev {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.3rem;
+}
+
+.stat-item-prev {
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+  padding: 0.25rem 1.2rem;
+  border-radius: 60px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 0.85rem;
+}
+
+/* ========== BOOKING CARD ========== */
+.booking-card-mobile {
+  background: white;
+  border-radius: 30px;
+  margin: 0.6rem 1rem 0.8rem 1rem;
+  padding: 1.4rem 1.2rem;
+  box-shadow: 0 15px 25px -12px #091e3030;
+  border: 1px solid #ecf3fa;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rate-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.rate-label {
+  font-size: 0.85rem;
+  color: #426684;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.rate-number {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #0a2c43;
+  line-height: 1;
+}
+
+.rate-number small {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #597b9a;
+}
+
+.badge-mini {
+  background: #e3efff;
+  border-radius: 40px;
+  padding: 0.3rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0c3b5e;
+  border: 1px solid #b9d8ff;
+  margin-top: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-book-mobile {
+  background: #0f2b43;
+  border: none;
+  color: white;
+  border-radius: 40px;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 18px -8px #0f2b4360;
+  cursor: pointer;
+  border: 1px solid #22668b30;
+  transition: 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-book-mobile:hover {
+  background: #1a405e;
+}
+
+/* ========== PROGRESS BAR ========== */
+.progress-container {
+  padding: 1rem 1.2rem 0.5rem;
+  background: #f2f6fb;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.step-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #cbddec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #7f9ab9;
+  margin-bottom: 0.3rem;
+}
+
+.step.active .step-circle {
+  background: #0f2b43;
+  border-color: #0f2b43;
+  color: white;
+}
+
+.step.completed .step-circle {
+  background: #1f8b4c;
+  border-color: #1f8b4c;
+  color: white;
+}
+
+.step-label {
+  font-size: 0.7rem;
+  color: #577594;
+}
+
+.progress-line {
+  height: 3px;
+  background: #cbddec;
+  margin: 0 1.2rem 1rem;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0f2b43;
+  width: 0%;
+  transition: width 0.3s;
+}
+
+/* ========== FORM ELEMENTS ========== */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1.2rem 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stage {
+  display: none;
+}
+
+.stage.active-stage {
+  display: block;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.1rem;
+}
+
+.input-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #426684;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-field input, .input-field textarea, .input-field select {
+  background: #f5f9ff;
+  border: 1.5px solid #cde0f3;
+  border-radius: 20px;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.15s;
+  color: #13293f;
+  width: 100%;
+}
+
+.input-field input:focus, .input-field textarea:focus {
+  border-color: #0f2b43;
+  background: white;
+}
+
+.row2 {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.row2 .input-field {
+  flex: 1 1 40%;
+}
+
+/* ========== LOCATION GROUP ========== */
+.location-group {
+  background: #eef4fd;
+  border-radius: 30px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #c2dbf5;
+}
+
+.loc-row button {
+  background: #0f2b43;
+  border: none;
+  color: white;
+  border-radius: 40px;
+  padding: 0.8rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid #2a5580;
+  width: 100%;
+  justify-content: center;
+}
+
+/* ========== CAMERA SECTION ========== */
+.camera-container {
+  background: #1a2f44;
+  border-radius: 30px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+#cameraFeed {
+  width: 100%;
+  max-height: 250px;
+  border-radius: 20px;
+  background: #2a4055;
+  transform: scaleX(-1);
+  object-fit: cover;
+}
+
+.captured-preview {
+  width: 100%;
+  max-height: 250px;
+  border-radius: 20px;
+  object-fit: cover;
+  display: none;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.camera-btn {
+  flex: 1;
+  background: white;
+  border: none;
+  border-radius: 40px;
+  padding: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.camera-btn.primary {
+  background: #0f2b43;
+  color: white;
+}
+
+.verification-status {
+  text-align: center;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border-radius: 30px;
+  background: #e8f0fe;
+}
+
+/* ========== TERMS BOX ========== */
+.terms-box {
+  background: #f5f9ff;
+  border: 1.5px solid #cde0f3;
+  border-radius: 30px;
+  padding: 1.2rem;
+  margin: 1rem 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.term-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #cde0f3;
+}
+
+.term-item i {
+  color: #0f2b43;
+  font-size: 1.2rem;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+.checkbox-field input {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== PAYMENT SECTION ========== */
+.payment-card {
+  background: white;
+  border-radius: 30px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid #ecf3fa;
+}
+
+.price-breakup {
+  background: #f5f9ff;
+  border-radius: 20px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.total-row {
+  border-top: 2px dashed #cbddec;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* ========== BUTTONS ========== */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  background: #0f2b43;
+  border: none;
+  color: white;
+  border-radius: 40px;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 2;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1.5px solid #0f2b43;
+  color: #0f2b43;
+  border-radius: 40px;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========== MESSAGES ========== */
+.live-message {
+  background: #e7f1fe;
+  margin: 0.5rem 1.2rem 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 60px;
+  border-left: 6px solid #0f2b43;
+  font-weight: 500;
+  color: #124061;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  color: #b33f2f;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  display: none;
+}
+
+/* ========== RECEIPT CARD (TRAIN TICKET STYLE) ========== */
+.receipt-card {
+  background: white;
+  margin: 1rem 0;
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Ticket perforation effect */
+.receipt-card::before,
+.receipt-card::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #f2f6fb;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.receipt-card::before {
+  left: -10px;
+}
+
+.receipt-card::after {
+  right: -10px;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed #cbddec;
+}
+
+.receipt-header h2 {
+  color: #0f2b43;
+  font-size: 1.4rem;
+}
+
+.receipt-header p {
+  color: #4e6f8b;
+  font-size: 0.8rem;
+}
+
+.receipt-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.receipt-field {
+  margin-bottom: 0.8rem;
+}
+
+.receipt-field .label {
+  font-size: 0.7rem;
+  color: #7f9ab9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.receipt-field .value {
+  font-weight: 700;
+  color: #0f2b43;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.receipt-highlight {
+  grid-column: span 2;
+  background: #e8f0fe;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.receipt-highlight .ticket-id {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #0f2b43;
+}
+
+.receipt-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #cbddec;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #4e6f8b;
+}
+
+.success-icon {
+  color: #1f8b4c;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ========== BOTTOM NAVIGATION ========== */
+.bottom-nav {
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.6rem 1.2rem;
+  border-top: 1px solid #cbddec;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #7f9ab9;
+  text-decoration: none;
+  font-size: 0.7rem;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: #0f2b43;
+}
+
+.nav-item i {
+  font-size: 1.2rem;
+}
+
+/* ========== ADMIN STYLES ========== */
+.admin-login {
+  background: white;
+  border-radius: 30px;
+  padding: 2rem;
+  margin: 2rem 1.2rem;
+}
+
+.admin-login h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #0f2b43;
+}
+
+.dashboard-header {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-card i {
+  font-size: 1.5rem;
+  color: #0f2b43;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card .number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f2b43;
+}
+
+.stat-card .label {
+  font-size: 0.7rem;
+  color: #7f9ab9;
+}
+
+.booking-request {
+  background: white;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid #ecf3fa;
+}
+
+.booking-request:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.booking-request-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.booking-request-id {
+  font-weight: 700;
+  color: #0f2b43;
+}
+
+.status-badge {
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-completed {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.ticket-search {
+  background: white;
+  border-radius: 30px;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ticket-search input {
+  flex: 1;
+  border: 1.5px solid #cde0f3;
+  border-radius: 30px;
+  padding: 0.8rem 1.2rem;
+  outline: none;
+}
+
+.ticket-search button {
+  background: #0f2b43;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+}
+
+/* ========== UTILITY CLASSES ========== */
+.loading {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { 
+  to { transform: rotate(360deg); } 
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.hidden {
+  display: none;
+}

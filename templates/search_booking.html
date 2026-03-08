@@ -1,0 +1,43 @@
+<!-- templates/search_booking.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Booking - Sky Bicycle{% endblock %}
+
+{% block content %}
+<div style="padding: 1rem;">
+  <h2 style="margin-bottom: 1.5rem; color: #0f2b43;">Search Booking</h2>
+  
+  <div style="background: white; border-radius: 30px; padding: 1.5rem; margin-bottom: 1rem;">
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="input-field">
+        <label><i class="fas fa-ticket-alt"></i> Ticket ID</label>
+        <input type="text" name="ticket_id" placeholder="Enter SKY-1234" pattern="SKY-\d{4}" title="Format: SKY-1234">
+        <small style="color: #7f9ab9;">Leave empty if searching by mobile</small>
+      </div>
+      
+      <div style="text-align: center; margin: 1rem 0; color: #4e6f8b;">OR</div>
+      
+      <div class="input-field">
+        <label><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+        <input type="text" name="mobile" placeholder="Enter 10 digit mobile" maxlength="10" pattern="\d{10}">
+      </div>
+      
+      <button type="submit" class="btn-primary" style="width: 100%;">
+        <i class="fas fa-search"></i> Search Booking
+      </button>
+    </form>
+  </div>
+  
+  <div style="background: #e7f1fe; border-radius: 20px; padding: 1rem;">
+    <h4 style="margin-bottom: 0.5rem;">Quick Tips:</h4>
+    <ul style="padding-left: 1.5rem; color: #124061;">
+      <li>Ticket ID format: SKY-1234</li>
+      <li>Mobile number should be 10 digits</li>
+      <li>You can search using either field</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

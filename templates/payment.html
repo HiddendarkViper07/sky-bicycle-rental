@@ -1,0 +1,192 @@
+<!-- templates/payment.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment - Sky Bicycle{% endblock %}
+
+{% block extra_head %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Progress Bar -->
+<div class="progress-container">
+  <div class="progress-steps">
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <span class="step-label">Details</span>
+    </div>
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <span class="step-label">Selfie</span>
+    </div>
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <span class="step-label">Agreement</span>
+    </div>
+    <div class="step active">
+      <div class="step-circle">4</div>
+      <span class="step-label">Payment</span>
+    </div>
+  </div>
+  <div class="progress-line">
+    <div class="progress-fill" style="width: 100%;"></div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="payment-card">
+    <h3 style="margin-bottom: 1rem;">Booking Summary</h3>
+    
+    <div style="background: #f5f9ff; border-radius: 15px; padding: 1rem; margin-bottom: 1rem;">
+      <p><strong>{{ booking_data.full_name }}</strong> · {{ booking_data.mobile }}</p>
+      <p>{{ booking_data.rent_date }} at {{ booking_data.rent_time }}</p>
+    </div>
+    
+    <div class="price-breakup">
+      <div class="price-row">
+        <span>Total Hours:</span>
+        <span>{{ hours }} hrs</span>
+      </div>
+      <div class="price-row">
+        <span>Total Amount (200₹/hr):</span>
+        <span>{{ total_amount }} ₹</span>
+      </div>
+      <div class="price-row">
+        <span>Booking Amount (pay now):</span>
+        <span style="color: #1f8b4c; font-weight: 700;">{{ paid_amount }} ₹</span>
+      </div>
+      <div class="price-row total-row">
+        <span>Balance at handover:</span>
+        <span>{{ balance_amount }} ₹</span>
+      </div>
+    </div>
+
+    <div style="margin: 1rem 0; padding: 0.5rem; background: #e8f0fe; border-radius: 15px;">
+      <p style="font-size: 0.9rem;"><i class="fas fa-info-circle"></i> Pay only {{ paid_amount }}₹ now. Remaining {{ balance_amount }}₹ after bicycle handover.</p>
+    </div>
+
+    <button class="btn-primary" style="width: 100%;" onclick="processPayment()" id="payBtn">
+      <i class="fas fa-credit-card"></i> Pay {{ paid_amount }}₹ Now
+    </button>
+  </div>
+  
+  <div class="button-group">
+    <a href="{% url 'terms' %}" class="btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+  </div>
+</div>
+
+<div class="live-message" id="liveMessage">
+  <i class="fas fa-circle-info"></i> Complete payment to confirm your booking
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const razorpayKey = "{{ razorpay_key }}";
+const orderId = "{{ order.id }}";
+const amount = {{ paid_amount }};
+const bookingData = {{ booking_data|safe }};
+
+function processPayment() {
+  const payBtn = document.getElementById('payBtn');
+  payBtn.disabled = true;
+  payBtn.innerHTML = '<span class="loading"></span> Opening Payment...';
+
+  const options = {
+    "key": razorpayKey,
+    "amount": amount * 100,  // Amount in paise
+    "currency": "INR",
+    "name": "Sky Bicycle Rental",
+    "description": "Booking Advance Payment",
+    "order_id": orderId,
+    "image": "https://cdn.razorpay.com/icons/icon-ios.png",
+    "handler": function(response) {
+      handlePaymentSuccess(response);
+    },
+    "prefill": {
+      "name": bookingData.full_name,
+      "contact": bookingData.mobile
+    },
+    "notes": {
+      "address": bookingData.address,
+      "hours": bookingData.hours,
+      "date": bookingData.rent_date,
+      "time": bookingData.rent_time
+    },
+    "theme": {
+      "color": "#0f2b43"
+    },
+    "modal": {
+      "ondismiss": function() {
+        payBtn.disabled = false;
+        payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Pay ' + amount + '₹ Now';
+        showMessage('Payment cancelled. You can try again.', 'info');
+      }
+    }
+  };
+
+  try {
+    const razorpayInstance = new Razorpay(options);
+    
+    razorpayInstance.on('payment.failed', function(response) {
+      console.error('Payment failed:', response.error);
+      showMessage('Payment failed: ' + (response.error.description || 'Please try again'), 'error');
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Pay ' + amount + '₹ Now';
+    });
+
+    razorpayInstance.open();
+    
+  } catch (error) {
+    console.error('Razorpay error:', error);
+    showMessage('Failed to start payment. Please try again.', 'error');
+    payBtn.disabled = false;
+    payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Pay ' + amount + '₹ Now';
+  }
+}
+
+function handlePaymentSuccess(response) {
+  // Send payment details to server
+  fetch('/payment-callback/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: new URLSearchParams({
+      'razorpay_payment_id': response.razorpay_payment_id,
+      'razorpay_order_id': response.razorpay_order_id,
+      'razorpay_signature': response.razorpay_signature
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      showMessage('Payment successful! Redirecting to receipt...', 'success');
+      setTimeout(() => {
+        window.location.href = '/receipt/' + data.booking_id + '/';
+      }, 1500);
+    } else {
+      showMessage('Payment verification failed', 'error');
+      payBtn.disabled = false;
+      payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Pay ' + amount + '₹ Now';
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showMessage('Server error. Please contact support.', 'error');
+    payBtn.disabled = false;
+    payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Pay ' + amount + '₹ Now';
+  });
+}
+
+function showMessage(msg, type) {
+  const msgDiv = document.getElementById('liveMessage');
+  msgDiv.innerHTML = '<i class="fas fa-' + (type === 'error' ? 'exclamation-circle' : 'circle-info') + '"></i> ' + msg;
+  msgDiv.style.background = type === 'error' ? '#f8d7da' : '#e7f1fe';
+  msgDiv.style.borderLeftColor = type === 'error' ? '#dc3545' : '#0f2b43';
+}
+</script>
+{% endblock %}

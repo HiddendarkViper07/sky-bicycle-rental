@@ -1,0 +1,55 @@
+<!-- templates/admin/admin_login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Sky Bicycle</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+<div style="max-width: 400px; width: 100%; padding: 1rem;">
+  <div class="admin-login">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="background: #0a253b; color: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">
+        🚲
+      </div>
+      <h2>Admin Login</h2>
+      <p style="color: #4e6f8b;">Sky Bicycle Rental</p>
+    </div>
+    
+    {% if messages %}
+      {% for message in messages %}
+      <div class="live-message" style="margin-bottom: 1rem; {% if message.tags == 'error' %}background: #f8d7da; border-left-color: #dc3545;{% endif %}">
+        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    
+    <form method="POST">
+      {% csrf_token %}
+      <div class="input-field">
+        <label><i class="fas fa-user"></i> Username</label>
+        <input type="text" name="username" required placeholder="Enter username">
+      </div>
+      
+      <div class="input-field">
+        <label><i class="fas fa-lock"></i> Password</label>
+        <input type="password" name="password" required placeholder="Enter password">
+      </div>
+      
+      <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a href="{% url 'home' %}" style="color: #4e6f8b; text-decoration: none;">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

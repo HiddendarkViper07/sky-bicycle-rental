@@ -1,0 +1,112 @@
+<!-- templates/terms.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms & Conditions - Sky Bicycle{% endblock %}
+
+{% block content %}
+<!-- Progress Bar -->
+<div class="progress-container">
+  <div class="progress-steps">
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <span class="step-label">Details</span>
+    </div>
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <span class="step-label">Selfie</span>
+    </div>
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <span class="step-label">Agreement</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">4</div>
+      <span class="step-label">Payment</span>
+    </div>
+  </div>
+  <div class="progress-line">
+    <div class="progress-fill" style="width: 75%;"></div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <form method="POST">
+    {% csrf_token %}
+    
+    <div class="terms-box">
+      <div class="term-item">
+        <i class="fas fa-clock"></i>
+        <div>
+          <strong>Extra Time Charges</strong><br>
+          <small>10 minutes grace period, after that ₹50 per 30 minutes</small>
+        </div>
+      </div>
+      <div class="term-item">
+        <i class="fas fa-tools"></i>
+        <div>
+          <strong>Damage Policy</strong><br>
+          <small>Any damage to bicycle will be charged as per assessment</small>
+        </div>
+      </div>
+      <div class="term-item">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+          <strong>Security Deposit</strong><br>
+          <small>₹500 hold on card, released after return</small>
+        </div>
+      </div>
+      <div class="term-item">
+        <i class="fas fa-clock"></i>
+        <div>
+          <strong>Return Time</strong><br>
+          <small>Return within selected hours + 10 min grace period</small>
+        </div>
+      </div>
+      <div class="term-item">
+        <i class="fas fa-id-card"></i>
+        <div>
+          <strong>ID Verification</strong><br>
+          <small>Original ID proof required at pickup</small>
+        </div>
+      </div>
+    </div>
+    
+    <div class="checkbox-field">
+      <input type="checkbox" id="agreeTerms" name="terms" onchange="toggleAgreement()">
+      <label for="agreeTerms">I agree to all terms and conditions</label>
+    </div>
+    
+    <div class="checkbox-field">
+      <input type="checkbox" id="damageAgree" name="damage_policy" onchange="toggleAgreement()">
+      <label for="damageAgree">I accept damage and extra time charges</label>
+    </div>
+    
+    <div class="button-group">
+      <a href="{% url 'selfie' %}" class="btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+      <button type="submit" class="btn-primary" id="agreeNextBtn" disabled>Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </form>
+</div>
+
+<div class="live-message" id="liveMessage">
+  <i class="fas fa-circle-info"></i> Please read and accept the terms to proceed
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function toggleAgreement() {
+  const agree1 = document.getElementById('agreeTerms').checked;
+  const agree2 = document.getElementById('damageAgree').checked;
+  document.getElementById('agreeNextBtn').disabled = !(agree1 && agree2);
+  
+  if (agree1 && agree2) {
+    document.getElementById('liveMessage').innerHTML = '<i class="fas fa-check-circle"></i> Terms accepted! Click Next to proceed.';
+  } else {
+    document.getElementById('liveMessage').innerHTML = '<i class="fas fa-circle-info"></i> Please accept both terms to continue';
+  }
+}
+</script>
+{% endblock %}

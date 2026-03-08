@@ -1,0 +1,204 @@
+<!-- templates/admin/booking_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Details - {{ booking.ticket_id }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .admin-container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+    .detail-card { background: white; border-radius: 30px; padding: 2rem; margin-bottom: 1.5rem; }
+    .detail-row { display: flex; padding: 1rem 0; border-bottom: 1px solid #ecf3fa; }
+    .detail-label { width: 140px; font-weight: 600; color: #426684; }
+    .detail-value { flex: 1; color: #13293f; }
+    .selfie-preview { max-width: 200px; border-radius: 15px; margin-top: 1rem; }
+    .action-buttons { display: flex; gap: 1rem; margin-top: 2rem; }
+    .status-form { background: #f5f9ff; border-radius: 20px; padding: 1.5rem; margin-top: 1.5rem; }
+  </style>
+</head>
+<body style="background: #eef3f9;">
+<div class="admin-container">
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="color: #0f2b43;">Booking Details</h1>
+    <div>
+      <a href="{% url 'admin_booking_list' %}" class="btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+      </a>
+    </div>
+  </div>
+  
+  {% if messages %}
+    {% for message in messages %}
+    <div class="live-message" style="margin-bottom: 1rem;">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+  
+  <!-- Booking Details Card -->
+  <div class="detail-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 style="color: #0f2b43;">{{ booking.ticket_id }}</h2>
+      <span class="status-badge status-{{ booking.status }}" style="font-size: 1rem;">{{ booking.status }}</span>
+    </div>
+    
+    <!-- Personal Details -->
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Personal Details</h3>
+    <div class="detail-row">
+      <div class="detail-label">Full Name</div>
+      <div class="detail-value">{{ booking.full_name }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Aadhar Number</div>
+      <div class="detail-value">{{ booking.aadhar_number }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Mobile</div>
+      <div class="detail-value">{{ booking.mobile }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Age</div>
+      <div class="detail-value">{{ booking.age }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Address</div>
+      <div class="detail-value">{{ booking.address }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Location</div>
+      <div class="detail-value">{{ booking.location }}</div>
+    </div>
+    
+    <!-- Rental Details -->
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Rental Details</h3>
+    <div class="detail-row">
+      <div class="detail-label">Rent Date</div>
+      <div class="detail-value">{{ booking.rent_date }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Rent Time</div>
+      <div class="detail-value">{{ booking.rent_time }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Hours</div>
+      <div class="detail-value">{{ booking.hours }} hours</div>
+    </div>
+    
+    <!-- Payment Details -->
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Payment Details</h3>
+    <div class="detail-row">
+      <div class="detail-label">Total Amount</div>
+      <div class="detail-value">₹{{ booking.total_amount }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Paid Amount</div>
+      <div class="detail-value">₹{{ booking.paid_amount }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Balance Amount</div>
+      <div class="detail-value">₹{{ booking.balance_amount }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Payment ID</div>
+      <div class="detail-value">{{ booking.payment_id|default:"N/A" }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Payment Status</div>
+      <div class="detail-value">{{ booking.payment_status }}</div>
+    </div>
+    
+    <!-- Selfie -->
+    {% if booking.selfie %}
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Selfie</h3>
+    <div>
+      <img src="{{ booking.selfie.url }}" alt="Customer Selfie" class="selfie-preview">
+    </div>
+    {% endif %}
+    
+    <!-- Terms -->
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Terms Acceptance</h3>
+    <div class="detail-row">
+      <div class="detail-label">Terms Accepted</div>
+      <div class="detail-value">{% if booking.terms_accepted %}✅ Yes{% else %}❌ No{% endif %}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Damage Policy</div>
+      <div class="detail-value">{% if booking.damage_policy_accepted %}✅ Yes{% else %}❌ No{% endif %}</div>
+    </div>
+    
+    <!-- Timestamps -->
+    <h3 style="margin: 1.5rem 0 1rem; color: #0f2b43;">Timeline</h3>
+    <div class="detail-row">
+      <div class="detail-label">Created At</div>
+      <div class="detail-value">{{ booking.created_at|date:"d M Y H:i:s" }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Last Updated</div>
+      <div class="detail-value">{{ booking.updated_at|date:"d M Y H:i:s" }}</div>
+    </div>
+  </div>
+  
+  <!-- Update Status Form -->
+  <div class="status-form">
+    <h3 style="margin-bottom: 1rem;">Update Booking Status</h3>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="update_status">
+      
+      <div style="display: flex; gap: 1rem; align-items: flex-end;">
+        <div style="flex: 1;">
+          <label style="display: block; margin-bottom: 0.5rem; color: #426684;">New Status</label>
+          <select name="status" style="width: 100%; padding: 0.8rem; border-radius: 15px; border: 1.5px solid #cde0f3;">
+            <option value="pending" {% if booking.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="confirmed" {% if booking.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+            <option value="completed" {% if booking.status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="cancelled" {% if booking.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">
+          <i class="fas fa-save"></i> Update Status
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Update Payment Form -->
+  <div class="status-form">
+    <h3 style="margin-bottom: 1rem;">Update Payment Status</h3>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="update_payment">
+      
+      <div style="display: flex; gap: 1rem; align-items: flex-end;">
+        <div style="flex: 1;">
+          <label style="display: block; margin-bottom: 0.5rem; color: #426684;">Payment Status</label>
+          <select name="payment_status" style="width: 100%; padding: 0.8rem; border-radius: 15px; border: 1.5px solid #cde0f3;">
+            <option value="pending" {% if booking.payment_status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="completed" {% if booking.payment_status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="failed" {% if booking.payment_status == 'failed' %}selected{% endif %}>Failed</option>
+            <option value="refunded" {% if booking.payment_status == 'refunded' %}selected{% endif %}>Refunded</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">
+          <i class="fas fa-save"></i> Update Payment
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <a href="{% url 'receipt' booking.id %}" target="_blank" class="btn-primary" style="flex: 1;">
+      <i class="fas fa-receipt"></i> View Receipt
+    </a>
+    <a href="{% url 'download_receipt' booking.id %}" class="btn-secondary" style="flex: 1;">
+      <i class="fas fa-download"></i> Download Receipt
+    </a>
+  </div>
+</div>
+</body>
+</html>
