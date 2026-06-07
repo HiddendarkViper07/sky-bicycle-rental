@@ -131,4 +131,8 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = [
+    "sky-bicycle-rental-production.up.railway.app",
+    "localhost",
+    "127.0.0.1"
+]
