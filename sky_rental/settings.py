@@ -112,27 +112,43 @@ ADMIN_USERNAME = config('ADMIN_USERNAME', default='admin')
 ADMIN_PASSWORD = config('ADMIN_PASSWORD', default='admin123')
 
 
+# Railway HTTPS Fix
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allowed Hosts
+ALLOWED_HOSTS = [
+    "sky-bicycle-rental-production.up.railway.app",
+    ".up.railway.app",
+    "localhost",
+    "127.0.0.1",
+]
+
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    "https://sky-bicycle-rental-production.up.railway.app",
+]
+
 # Security settings
 if DEBUG:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+
     SECURE_HSTS_SECONDS = 0
     SECURE_HSTS_PRELOAD = False
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+
 else:
-    SECURE_SSL_REDIRECT = True
+    # Railway handles SSL
+    SECURE_SSL_REDIRECT = False
+
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-
-ALLOWED_HOSTS = [
-    "sky-bicycle-rental-production.up.railway.app",
-    "localhost",
-    "127.0.0.1"
-]
