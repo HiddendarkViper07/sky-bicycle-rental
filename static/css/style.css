@@ -27,6 +27,7 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.02);
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden;
 }
 
 /* ========== NAVBAR ========== */
@@ -302,8 +303,11 @@ body {
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 0 1.2rem 1rem;
+  padding: 0 1.2rem 100px;
   -webkit-overflow-scrolling: touch;
+
+  width: 100%;
+  max-width: 100%;
 }
 
 .stage {
@@ -683,11 +687,24 @@ body {
 
 /* ========== BOTTOM NAVIGATION ========== */
 .bottom-nav {
-  background: white;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+
+  background: #ffffff;
   display: flex;
   justify-content: space-around;
-  padding: 0.6rem 1.2rem;
+  align-items: center;
+
+  padding: 12px 10px;
   border-top: 1px solid #cbddec;
+
+  z-index: 9999;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+
   flex-shrink: 0;
 }
 
